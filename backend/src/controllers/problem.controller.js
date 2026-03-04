@@ -236,6 +236,7 @@ export const getAllProblemsSolvedByUser = async (req, res) => {
             problems
         })
     } catch (error) {
-        
+        console.error(error);
+        return res.status(500).json({ error: "Error while fetching problems" });
     }
 }

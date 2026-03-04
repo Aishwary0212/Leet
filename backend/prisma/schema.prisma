@@ -15,13 +15,14 @@ model User {
   password      String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  playlists     Playlist[]
   problems      Problem[]
   problemSolved ProblemSolved[]
   submission    Submission[]
 }
 
 model Problem {
-  id                String          @id @default(uuid())
+  id                String               @id @default(uuid())
   title             String
   description       String
   difficulty        Difficulty
@@ -34,10 +35,11 @@ model Problem {
   testcases         Json
   codeSnippet       Json
   referenceSolution Json
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  user              User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   solvedBy          ProblemSolved[]
+  problemsPlaylists ProblemsInPlayList[]
   submission        Submission[]
 }
 
@@ -90,6 +92,31 @@ model ProblemSolved {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
+}
+
+model Playlist {
+  id          String               @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  createdAt   DateTime             @default(now())
+  upatedAt    DateTime             @updatedAt
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problems    ProblemsInPlayList[]
+
+  @@unique([name, userId])
+}
+
+model ProblemsInPlayList {
+  id         String   @id @default(uuid())
+  playListId String
+  problemId  String
+  createdAt  DateTime @default(now())
+  upatedAt   DateTime @updatedAt
+  playList   Playlist @relation(fields: [playListId], references: [id], onDelete: Cascade)
+  problem    Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([playListId, problemId])
 }
 
 enum UserRole {
