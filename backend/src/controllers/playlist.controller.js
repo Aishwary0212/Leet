@@ -69,7 +69,7 @@ export const getPlaylistDetails = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      messgae: "Playlist Fetched Successfully",
+      message: "Playlist Fetched Successfully",
       playlist,
     });
   } catch (error) {

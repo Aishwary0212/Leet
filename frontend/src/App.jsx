@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react'
-import { Toaster } from 'react-hot-toast'
-import { Routes,Route,Navigate } from 'react-router-dom'
-import HomePage from './page/HomePage'
-import SignUpPage from './page/SignUpPage'
-import LoginPage from './page/LoginPage'
-import { useAuthStore } from './store/useAuthStore'
-import { Loader } from 'lucide-react'
-import Layout from './layout/Layout'
-import AdminRoute from './components/AdminRoute'
-import AddProblem from './page/AddProblem'
+import React, { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
+import HomePage from "./page/HomePage";
+import LoginPage from "./page/LoginPage";
+import SignUpPage from "./page/SignUpPage";
+import { useAuthStore } from "./store/useAuthStore";
+import { Loader } from "lucide-react";
+import Layout from "./layout/Layout";
+import AdminRoute from "./components/AdminRoute";
+import AddProblem from "./page/AddProblem";
+import ProblemPage from "./page/ProblemPage";
+import PlaylistPage from "./page/PlaylistPage";
+import AllPlaylist from "./page/AllPlaylist";
+import ProfilePage from "./page/ProfilePage";
 
 const App = () => {
-  const {authUser,checkAuth,isCheckingAuth} = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+
   useEffect(() => {
-    checkAuth()
-  }, [checkAuth])
+    checkAuth();
+  }, [checkAuth]);
+
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -22,8 +29,9 @@ const App = () => {
       </div>
     );
   }
+
   return (
-    <div className="flex flex-col items-center justify-start">
+    <div className="flex flex-col items-center justify-start ">
       <Toaster />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -35,14 +43,26 @@ const App = () => {
 
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+        />
+        <Route
+          path="/profile"
+          element={ <ProfilePage />}
         />
 
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
         />
-        <Route element={<AdminRoute/>}>
+
+        <Route
+          path="/problem/:id"
+          element={authUser ? <ProblemPage /> : <Navigate to={"/login"} />}
+        />
+        <Route path="/playlist/:playlistId" element={<PlaylistPage />} />
+        <Route path="/playlist" element={<AllPlaylist />} />
+
+        <Route element={<AdminRoute />}>
           <Route
             path="/add-problem"
             element={authUser ? <AddProblem /> : <Navigate to="/" />}
@@ -51,6 +71,6 @@ const App = () => {
       </Routes>
     </div>
   );
-}
+};
 
-export default App
+export default App;
