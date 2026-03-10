@@ -1,196 +1,239 @@
-# 🚀 LeetLab - LeetCode Clone
+# LeetLab
 
-LeetLab is a full-stack, LeetCode-like coding platform that allows users to solve programming problems, execute code in multiple languages, and organize problems into custom playlists. Built with modern web technologies, it provides a real coding environment with test case execution, submission tracking, and problem management similar to competitive programming platforms.
+LeetLab is a full-stack coding platform inspired by LeetCode. Users can authenticate, solve problems in a browser-based editor, run code against test cases through Judge0, review submissions, and organize problems into playlists.
 
----
+## What It Includes
 
-## 📋 Features
+- JWT authentication with secure HTTP-only cookies
+- Problem solving flow with Monaco Editor
+- Code execution for Python, Java, JavaScript, and C++
+- Submission history with runtime, memory, and verdict data
+- Admin-only problem creation and maintenance
+- User playlists for grouping practice problems
 
-- 👤 **User Authentication**: Secure JWT-based sign up, login, and profile management (with bcrypt hashing).
-- 💻 **Real-Time Code Execution**: Execute code securely using a self-hosted Judge0 API. Supports JavaScript, Python, Java, and C++.
-- 🧪 **Test Case Validation**: Run code against multiple test cases, automatically compare outputs, and display runtime, memory usage, and execution status.
-- 📊 **Submissions**: Track and view submission history for each problem (Language, Execution Time, Memory, Status).
-- 📚 **Playlists**: Create custom playlists, save problems, and organize practice sets.
-- 🧠 **Problem Management**: Admin panel with full CRUD operations to manage problems (Title, Description, Difficulty, Tags, Constraints, Test cases).
-- 🧑‍💻 **Code Editor**: Integrated Monaco Editor with language selection, syntax highlighting, and a clean coding environment.
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
-- **Framework**: React 19 + Vite
-- **Styling**: Tailwind CSS v4, DaisyUI
-- **State Management**: Zustand
-- **Routing**: React Router DOM v7
-- **Editor**: Monaco Editor
-- **Forms & Validation**: React Hook Form, Zod
-- **Icons & Toasts**: Lucide React, React Hot Toast
-- **HTTP Client**: Axios
+- React 19
+- Vite
+- Tailwind CSS v4
+- DaisyUI
+- Zustand
+- React Router DOM v7
+- React Hook Form + Zod
+- Monaco Editor
 
 ### Backend
 
-- **Runtime**: Node.js
-- **Framework**: Express.js v5
-- **Database**: PostgreSQL (Neon Database)
-- **ORM**: Prisma v7 (with Prisma Accelerate)
-- **Authentication**: JSON Web Tokens (JWT), bcryptjs
-- **Code Execution**: Self-hosted Judge0 (Docker)
+- Node.js
+- Express 5
+- Prisma 7
+- PostgreSQL
+- JWT + bcryptjs
+- Judge0 for code execution
 
----
-
-## ⚙️ System Architecture
+## Project Structure
 
 ```text
-Frontend (React)
-        │
-        │ HTTP API (Axios)
-        ▼
-Backend (Node.js + Express)
-        │
-        ├── PostgreSQL (Neon) via Prisma
-        │
-        └── Judge0 (Docker container)
-                │
-                └── Executes code securely
-
-```
-
----
-
-## 📁 Project Structure
-
-```
-LeetLab/
-├── frontend/
-│   ├── public/
+Leet/
+├── backend/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   ├── schema.prisma
+│   │   └── prisma.config.ts
 │   ├── src/
-│   │   ├── assets/
-│   │   ├── components/       # Reusable UI (Navbar, Modals, Editor, etc.)
-│   │   │   ├── AddToPlaylistModal.jsx
-│   │   │   ├── AdminRoute.jsx
-│   │   │   ├── AuthImagePattern.jsx
-│   │   │   ├── CreatePlaylistModal.jsx
-│   │   │   ├── CreateProblemForm.jsx
-│   │   │   ├── LogoutButton.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── ProblemTable.jsx
-│   │   │   ├── Submission.jsx
-│   │   │   └── SubmissionList.jsx
-│   │   ├── layout/           # App Layout wrappers
-│   │   ├── lib/              # Axios config and language maps
-│   │   ├── page/             # Route pages
-│   │   │   ├── AddProblem.jsx
-│   │   │   ├── AllPlaylist.jsx
-│   │   │   ├── HomePage.jsx
-│   │   │   ├── LoginPage.jsx
-│   │   │   ├── PlaylistPage.jsx
-│   │   │   ├── ProblemPage.jsx
-│   │   │   ├── ProfilePage.jsx
-│   │   │   └── SignUpPage.jsx
-│   │   └── store/            # Zustand state stores
-│   ├── package.json
-│   └── vite.config.js
-│
-└── backend/
-   ├── prisma/
-   │   ├── schema.prisma     # Database schema definition
-   │   └── migrations/       # Prisma migration history
-   ├── src/
-   │   ├── controllers/      # Route controllers (auth, executeCode, etc.)
-   │   ├── libs/             # Database client & Judge0 API wrappers
-   │   ├── middleware/       # Custom middleware (auth.middleware.js)
-   │   ├── routes/           # API route definitions
-   │   ├── generated/        # Generated Prisma Client
-   │   └── index.js          # Express server entry point
-   └── package.json
-
+│   │   ├── controllers/
+│   │   ├── libs/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   └── index.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── layout/
+│   │   ├── lib/
+│   │   ├── page/
+│   │   └── store/
+│   └── package.json
+└── README.md
 ```
 
----
+## How It Works
 
-## 🐳 Judge0 Setup (Self-Hosted)
-
-This project relies on Judge0 for secure code execution. You must start it via Docker before submitting any code on the platform.
-**_Prerequisites:_** Ensure you have Docker and Docker Compose installed (Ubuntu 22.04 recommended).
-
-
-1. Download and extract the release archive:
+```text
+React frontend
+    |
+    |  HTTP requests with cookies
+    v
+Express API
+    |
+    +--> PostgreSQL via Prisma
+    |
+    +--> Judge0 API for code execution
 ```
+
+## Prerequisites
+
+- Node.js 18+
+- npm
+- PostgreSQL database
+- Docker and Docker Compose for Judge0
+
+## Local Setup
+
+### 1. Install dependencies
+
+```bash
+cd backend
+npm install
+cd ../frontend
+npm install
+```
+
+### 2. Configure backend environment
+
+Create `backend/.env` with these keys:
+
+```env
+PORT=8080
+DATABASE_URL=your_postgresql_connection_string
+ACCELERATE_URL=your_prisma_accelerate_url
+JWT_SECRET=your_jwt_secret
+JUDGE0_API_URL=http://localhost:2358
+```
+
+Notes:
+
+- `PORT` should stay aligned with the frontend's development API base URL, which currently points to `http://localhost:8080/api/v1`.
+- `ACCELERATE_URL` is used by the Prisma client in this repo.
+
+### 3. Apply database migrations
+
+```bash
+cd backend
+npx prisma migrate dev
+```
+
+### 4. Start Judge0
+
+This app expects a self-hosted Judge0 instance.
+
+```bash
 wget https://github.com/judge0/judge0/releases/download/v1.13.1/judge0-v1.13.1.zip
 unzip judge0-v1.13.1.zip
-```
-
-2. Visit [this website](https://www.random.org/passwords/?num=1&len=32&format=plain&rnd=new) to generate a random password.
-3. Use the generated password to update the variable `REDIS_PASSWORD` in the `judge0.conf` file.
-4. Visit again [this website](https://www.random.org/passwords/?num=1&len=32&format=plain&rnd=new) to generate another random password.
-5. Use the generated password to update the variable `POSTGRES_PASSWORD` in the `judge0.conf` file.
-6. Run all services and wait a few seconds until everything is initialized:
-```
 cd judge0-v1.13.1
 docker-compose up -d db redis
-sleep 10s
 docker-compose up -d
-sleep 5s
 ```
 
-The Judge0 API will now be available at ``` http://localhost:2358/ ``` for your backend to use.
+After startup, Judge0 should be reachable at `http://localhost:2358`.
 
----
-## 🛣️ API Routes
-### Authentication (```/api/v1/auth```)
-- ```POST /register``` - User registration
+### 5. Run the backend
 
-- ```POST /login``` - User login
+```bash
+cd backend
+npm run dev
+```
 
-- ```POST /logout``` - User logout
-- ```GET /check``` - User Data loads
+### 6. Run the frontend
 
-### Problems (```/api/v1/problems```)
-- GET ```/get-all-problems``` - Fetch all problems
+```bash
+cd frontend
+npm run dev
+```
 
-- GET ```/get-problem/:id``` - Get problem details
+Frontend development server:
 
-- POST ```/create-problem``` - Create new problem (Admin only)
+- `http://localhost:5173`
 
-- PUT ```/update-problem/:id``` - Update problem (Admin only)
+Backend development server:
 
-- DELETE ```/delete-problem/:id``` - Delete problem (Admin only)
+- `http://localhost:8080`
 
-### Code Execution (```/api/v1/execute-Code```)
-- POST ```/``` - Execute code and run test cases
+## Authentication Model
 
-### Submissions (/api/submission)
-- GET ```/get-all-submissions``` - Fetch user submissions
+- Registration and login issue a JWT in an HTTP-only `jwt` cookie
+- Protected routes read the cookie through backend middleware
+- Admin-only problem routes require the authenticated user to have role `ADMIN`
 
-- GET ```/get-submission/:problemId``` - Get submission details
-- GET ```/get-submissions-count/:problemId``` - Get Submission Count
+## Main Frontend Pages
 
-### Playlists (```/api/v1/playlist```)
-- GET ```/``` - Fetch user playlists
+- `/login` and `/signup` for authentication
+- `/` for the problem list
+- `/problem/:id` for solving a single problem
+- `/playlist` for all playlists
+- `/playlist/:playlistId` for playlist details
+- `/profile` for user profile data
+- `/add-problem` for admin problem creation
 
-- Get /```:playlistId``` - Fetch Playlist detail
-- POST ```/create-playlist``` - Create new playlist
+## API Overview
 
-- ```DELETE /:id``` - Delete playlist
+Base URL: `http://localhost:8080/api/v1`
 
-- POST ```/:playlistId/add-problem``` - Add problems to playlist
+### Auth
 
-- DELETE ```/:id/problems/:problemId``` - Remove problem from playlist
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /auth/logout`
+- `GET /auth/check`
 
----
-## 🗄️ Database Schema
-Key entities managed via Prisma:
+### Problems
 
-- ***User:*** User accounts and authentication credentials.
+- `GET /problems/get-all-problems`
+- `GET /problems/get-problem/:id`
+- `GET /problems/get-solved-problems`
+- `POST /problems/create-problem`
+- `PUT /problems/update-problem/:id`
+- `DELETE /problems/delete-problem/:id`
 
-- ****Problem:**** Coding problems, descriptions, and metadata.
+### Code Execution
 
-- ***Submission:*** User code submissions and execution results.
+- `POST /execute-code/`
 
-- ***TestCase:*** Input/output test cases for problems.
+### Submissions
 
-- ***Playlist:*** User-created problem collections.
+- `GET /submission/get-all-submissions`
+- `GET /submission/get-submission/:problemId`
+- `GET /submission/get-submissions-count/:problemId`
 
-- ***ProblemsOnPlaylist:*** Junction table managing problems within playlists.
+### Playlists
+
+- `GET /playlist/`
+- `GET /playlist/:playlistId`
+- `POST /playlist/create-playlist`
+- `POST /playlist/:playlistId/add-problem`
+- `DELETE /playlist/:playlistId`
+- `DELETE /playlist/:playlistId/remove-problem`
+
+## Database Models
+
+The Prisma schema currently centers on these models:
+
+- `User`
+- `Problem`
+- `Submission`
+- `TestCasesResult`
+- `ProblemSolved`
+- `Playlist`
+- `ProblemsInPlayList`
+
+## Development Notes
+
+- The frontend uses `withCredentials: true`, so the backend must keep CORS credentials enabled in development.
+- The backend currently allows frontend origins `http://localhost:5173` and `http://localhost:5174`.
+- Prisma configuration is split between `backend/prisma/schema.prisma` and `backend/prisma.config.ts`.
+
+## Scripts
+
+### Backend
+
+- `npm run dev` - start the Express server with Nodemon
+
+### Frontend
+
+- `npm run dev` - start Vite
+- `npm run build` - create a production build
+- `npm run preview` - preview the production build
+- `npm run lint` - run ESLint
